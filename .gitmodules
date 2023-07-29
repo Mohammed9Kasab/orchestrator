@@ -1,0 +1,6 @@
+[submodule "orchestrator-backend"]
+	path = orchestrator-backend
+	url = git@github.com:Mohammed9Kasab/orchestrator-backend.git
+[submodule "orchestrastor-frontend"]
+	path = orchestrastor-frontend
+	url = git@github.com:Mohammed9Kasab/orchestrastor-frontend.git
