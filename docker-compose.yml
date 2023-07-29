@@ -1,0 +1,82 @@
+#version: "3.9"
+#services:
+#  backend:
+#    image: orchestrator-backend
+#    container_name: orchestrator-backend
+#    build:
+#      context: ./orchestrator-backend
+#    ports:
+#      - "8080:80"
+#  frontend:
+#    image: orchestrator-frontend
+#    container_name: orchestrator-frontend
+#    build:
+#      context: ./orchestrastor-frontend
+#    ports:
+#      - "4200:80"
+#    depends_on:
+#      - backend
+
+
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+version: '3.8'
+services:
+  orchestrator-backend:
+    image: orchestrator-backend
+    container_name: orchestrator-backend
+    build:
+      context: ./orchestrator-backend
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=dev,api-docs
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://orchestrator-postgresql:5432/orchestrator
+      - SPRING_DATASOURCE_USERNAME=orchestrator
+      - SPRING_DATASOURCE_PASSWORD=orchestrator123
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://orchestrator-postgresql:5432/orchestrator
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    ports:
+      - "8080:80"
+    networks:
+      - default
+
+    depends_on:
+      - orchestrator-postgresql
+
+  orchestrator-postgresql:
+    image: postgres:14.5
+    volumes:
+      - ~/volumes/jhipster/orchestrator/postgresql/:/var/lib/postgresql/data/
+
+    environment:
+      - POSTGRES_USER=orchestrator
+      - POSTGRES_PASSWORD=orchestrator123
+      - POSTGRES_DB=orchestrator
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    ports:
+      - "127.0.0.1:5432:5432"
+    networks:
+      - default
+    depends_on:
+      - orchestrator-mailhog
+
+  orchestrator-mailhog:
+    image: mailhog/mailhog:latest
+    restart: always
+    ports:
+      - 1025:1025
+      - 8025:8025
+
+  orchestrator-frontend:
+    image: orchestrator-frontend
+    container_name: orchestrator-frontend
+    build:
+      context: ./orchestrastor-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - orchestrator-backend
