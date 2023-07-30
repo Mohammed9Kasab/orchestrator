@@ -1,8 +1,8 @@
-#Parent for orchestrator application
+#Parent Repo for orchestrator application
 ---
 
 **Clone with:**
-> $git clone --remote-submodules git@github.com:Mohammed9Kasab/orchestrator.git
+> git clone --remote-submodules git@github.com:Mohammed9Kasab/orchestrator.git
 
 **Load submodules: (frontend and backend) **
 
