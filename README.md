@@ -12,6 +12,7 @@
 
 **Then, switch to main branch in the frontend && backend directories:**
 > git checkout main
+
 > git pull origin main 
 
 **Then, to start up, in the parent path, run this command :**
