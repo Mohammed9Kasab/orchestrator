@@ -6,7 +6,8 @@
 
 **Load submodules: (frontend and backend) **
 
-> cd parent-repository in your terminal 
+> cd parent-repository in your terminal
+
 > git submodule update --init
 
 **Then, switch to main branch in the frontend && backend directories:**
